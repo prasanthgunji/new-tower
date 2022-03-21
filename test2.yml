@@ -1,0 +1,26 @@
+---
+- hosts: dev
+  become: true
+  tasks:
+    - name: chronyd service enabled
+      service:
+        name: chronyd
+        enabled: true
+        state: started
+    - shell: timedatectl set-ntp false
+    - command: timedatectl
+      register: ab
+    - debug:
+        var=ab
+
+    - name: chronyd.service disabled
+      service:
+        name: chronyd
+        enabled: false
+        state: started
+    - shell: timedatectl set-ntp true
+    - command: timedatectl
+      register: abcd
+    - debug:
+        var=abcd
+
